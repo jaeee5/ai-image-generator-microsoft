@@ -2,18 +2,50 @@
 
 import fetchSuggestionFromChatGPT from "@/lib/fetchSuggestionFromChatGPT";
 import useSWR from "swr";
-import { useState } from "react"
+import { FormEvent, useState } from "react"
+import fetchImages from "@/lib/fetchImages";
 
 function PromptInput() {
     const [input, setInput] = useState("");
 
     const { data: suggestion, isLoading, mutate, isValidating } = useSWR('/api/suggestion', fetchSuggestionFromChatGPT, { revalidateOnFocus: false,});
 
-    const loading = isLoading || isValidating
+    const { mutate: updateImages } = useSWR("/api/getImages", fetchImages,{
+        revalidateOnFocus: false,
+    })
+    
+    const submitPrompt = async(useSuggestion?: boolean) => {
+        const inputPrompt = input;
+        setInput("");
+
+        console.log(inputPrompt);
+        //p is the prompt to send to API
+        const p = useSuggestion ? suggestion : inputPrompt;
+
+        const res = await fetch('/api/generateImage',{
+            method:'POST',
+            headers:{ 'Content-Type': 'application/json'},
+            body: JSON.stringify({prompt: p})
+        })
+
+        const data = await res.json();
+
+        updateImages();
+    }
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        await submitPrompt();
+    };
+
+    const loading = isLoading || isValidating;
 
     return (
         <div className="m-10">
-            <form className="flex flex-col lg:flex-row shadow-md shadow-slate-400/10 border rounded-md lg:divide-x">
+            <form 
+            onSubmit={handleSubmit}
+            className="flex flex-col lg:flex-row shadow-md shadow-slate-400/10 border rounded-md lg:divide-x">
                 <textarea 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -37,6 +69,7 @@ function PromptInput() {
                 <button 
                 className="p-4 bg-violet-400 text-white transition-colors duration-200 font-bold disabled:text-gray-300  disabled:cursor-not-allowed disabled:bg-gray-400"
                 type="button"
+                onClick={() => submitPrompt(true)}
                 >
                     Use Suggestion
                 </button>
