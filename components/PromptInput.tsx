@@ -11,7 +11,7 @@ function PromptInput() {
 
     const { data: suggestion, isLoading, mutate, isValidating } = useSWR('/api/suggestion', fetchSuggestionFromChatGPT, { revalidateOnFocus: false,});
 
-    const { mutate: updateImages } = useSWR("/api/getImages", fetchImages,{
+    const { mutate: updateImages } = useSWR("Images", fetchImages,{
         revalidateOnFocus: false,
     })
     
@@ -21,8 +21,12 @@ function PromptInput() {
 
         
         //p is the prompt to send to API
-        const p = useSuggestion ? suggestion : inputPrompt;
-        
+        const p = useSuggestion 
+            ? suggestion 
+            : inputPrompt || (!isLoading && !isValidating && suggestion);
+
+        console.log(p);
+
         const notificationPrompt = p;
         const notificationPromptShort = notificationPrompt.slice(0, 20);
 
@@ -88,6 +92,7 @@ function PromptInput() {
                 className="p-4 bg-violet-400 text-white transition-colors duration-200 font-bold disabled:text-gray-300  disabled:cursor-not-allowed disabled:bg-gray-400"
                 type="button"
                 onClick={() => submitPrompt(true)}
+                disabled={isLoading || isValidating}
                 >
                     Use Suggestion
                 </button>

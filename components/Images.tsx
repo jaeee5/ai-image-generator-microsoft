@@ -15,7 +15,7 @@ function Images() {
         data: images,
         isLoading, 
         mutate: refreshImages, 
-        isValidating } = useSWR('/api/getImages', fetchImages, { revalidateOnFocus: false,
+        isValidating } = useSWR('Images', fetchImages, { revalidateOnFocus: false,
     });
 
     return (
