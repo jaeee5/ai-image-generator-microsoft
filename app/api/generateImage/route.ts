@@ -6,7 +6,7 @@ export async function POST(request: Request){
     const prompt = res.prompt;
 
     //we are sending a REST POST request to out api end point which i going to be an azure function and we are sending the body which is going to be in the form of a JSON object
-    const response = await fetch('https://ai-image-generator-dall-e.azurewebsites.net/api/generateimage', {
+    const response = await fetch(`${process.env.GENERATE_IMAGE}`, {
         method:'POST',
         headers: {
             'Content-Type': 'application/json'
