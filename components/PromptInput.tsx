@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 function PromptInput() {
     const [input, setInput] = useState("");
 
-    const { data: suggestion, isLoading, mutate, isValidating } = useSWR('/api/suggestion', fetchSuggestionFromChatGPT, { revalidateOnFocus: false,});
+    const { data: suggestion, isLoading, mutate, isValidating } = useSWR('suggestion', fetchSuggestionFromChatGPT, { revalidateOnFocus: false,});
 
     const { mutate: updateImages } = useSWR("Images", fetchImages,{
         revalidateOnFocus: false,
