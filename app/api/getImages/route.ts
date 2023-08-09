@@ -1,3 +1,5 @@
+import { NextResponse } from "next/server";
+
 export async function GET(request: Request) {
     const response = await fetch(`${process.env.GET_IMAGES}`, {
         cache: "no-store",
@@ -13,4 +15,7 @@ export async function GET(request: Request) {
     });
 };
 
+export async function POST(request: Request) {
+    return NextResponse.json({})
+}
 
