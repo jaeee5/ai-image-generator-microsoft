@@ -3,7 +3,7 @@ const nextConfig = {
     images: {
         domains: [
             "links.papareact.com",
-            "aiimagegeneratordalle2.blob.core.windows.net"
+            "aiappimagegenerator.blob.core.windows.net"
         ],
     }
 }
