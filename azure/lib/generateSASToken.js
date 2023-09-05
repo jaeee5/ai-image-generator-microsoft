@@ -3,7 +3,7 @@ const {
     StorageSharedKeyCredential,
     BlobSASPermissions,
     generateBlobSASQueryParameters,
-} =  require('@azure/storage-blob');
+} = require('@azure/storage-blob');
 
 const accountName = process.env.accountName;
 const accountKey = process.env.accountKey;
@@ -30,8 +30,7 @@ async function generateSASToken() {
     const expiryDate = new Date()
     expiryDate.setMinutes(expiryDate.getMinutes() + 30);
 
-    const sasToken = generateBlobSASQueryParameters(
-        {
+    const sasToken = generateBlobSASQueryParameters({
             containerName: containerClient.containerName,
             permissions: permissions.toString(),
             expiresOn: expiryDate,

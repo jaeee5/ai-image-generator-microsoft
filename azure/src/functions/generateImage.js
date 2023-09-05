@@ -1,19 +1,25 @@
-const { app } = require("@azure/functions");
+const {
+    app
+} = require("@azure/functions");
 const openai = require("../../lib/openai");
-const axios = require("axios"); 
+const axios = require("axios");
 const generateSASToken = require("../../lib/generateSASToken");
 
-const { BlobServiceClient } = require("@azure/storage-blob");
+const {
+    BlobServiceClient
+} = require("@azure/storage-blob");
 
 const accountName = process.env.accountName;
 
 const containerName = "images";
 
-app.http('generateImage',{
+app.http('generateImage', {
     methods: ["POST"],
     authLevel: "anonymous",
     handler: async (request) => {
-        const { prompt } = await request.json();
+        const {
+            prompt
+        } = await request.json();
 
         console.log(`Prompt is ${prompt}`);
 
@@ -25,7 +31,9 @@ app.http('generateImage',{
         //returns in array buffer type
         image_url = response.data.data[0].url;
         //Downloads the image and returns it as an arraybuffer
-        const res = await axios.get(image_url, {responseType: 'arraybuffer'});
+        const res = await axios.get(image_url, {
+            responseType: 'arraybuffer'
+        });
 
         const arrayBuffer = res.data;
 
@@ -50,7 +58,9 @@ app.http('generateImage',{
             console.error("Error uploading file:", error.message);
         }
 
-        return { body: "Successfully Uploaded Image"}
+        return {
+            body: "Successfully Uploaded Image"
+        }
     },
 
 });

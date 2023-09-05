@@ -1,7 +1,7 @@
 const {
     Configuration,
     OpenAIApi
-} =  require("openai");
+} = require("openai");
 
 const config = new Configuration({
     organization: process.env.OPEN_AI_ORGANIZATION,
